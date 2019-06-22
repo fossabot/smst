@@ -1,0 +1,43 @@
+{
+    "defs": [{
+            "id": 4097,
+            "key": "com.wolfired::Parent",
+            "elem": [{
+                "name": "name",
+                "metas": ["string"]
+            }, {
+                "name": "age",
+                "metas": ["i8"]
+            }]
+        },
+        {
+            "id": 4098,
+            "key": "com.wolfired::Son",
+            "elem": [{
+                "name": "name",
+                "metas": ["string"]
+            }, {
+                "name": "age",
+                "metas": ["i8"]
+            }, {
+                "name": "emails",
+                "metas": ["array", "string"]
+            }, {
+                "name": "id_map",
+                "metas": ["map", "u32", "string"]
+            }, {
+                "name": "str_map",
+                "metas": ["map", "string", "u32"]
+            }, {
+                "name": "f32_map",
+                "metas": ["map", "f64", "string"]
+            }, {
+                "name": "parent",
+                "metas": ["com.wolfired::Parent"]
+            }, {
+                "name": "what",
+                "metas": ["tuple", "i8", "f32", "string", "com.wolfired::Parent"]
+            }]
+        }
+    ]
+}

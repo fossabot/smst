@@ -1,4 +1,4 @@
 /.vscode/
-/bin/
+/bin/*.js
 /lib/
 /node_modules/

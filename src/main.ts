@@ -7,7 +7,7 @@ let argv = yargs.usage("Usage: $0 --lang [target lang] --file [json file] --path
 
 let json: { defs: smst.Meta[] } = JSON.parse(fs.readFileSync(argv.file, "utf8"));
 
-json.defs.forEach(async def => {
-    (await smst.getFactory(argv.lang)).addMeta(def.key, def);
-    (await smst.getFactory(argv.lang)).toSource(argv.path, def);
+json.defs.forEach(def => {
+    smst.getFactory(argv.lang).addMeta(def.key, def);
+    smst.getFactory(argv.lang).toSource(argv.path, def);
 });

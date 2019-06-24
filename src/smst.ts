@@ -95,7 +95,7 @@ export function addFactory(lang: string, factory: Factory): void {
     factories.set(lang, factory);
 }
 
-export async function getFactory(lang: string): Promise<Factory> {
-    void 0 === factories.get(lang) && await import("./smst_" + lang);
+export function getFactory(lang: string): Factory {
+    void 0 === factories.get(lang) && require("./smst_" + lang);
     return factories.get(lang)!;
 }

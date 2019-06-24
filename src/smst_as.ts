@@ -443,8 +443,6 @@ let factory = new Factory(ctm);
 
 addFactory("as", factory);
 
-export default factory;
-
 factory.addMeta("bool", bool);
 factory.addMeta("i8", i8);
 factory.addMeta("i16", i16);

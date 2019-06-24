@@ -2,7 +2,7 @@
   "name": "smst",
   "version": "0.0.1",
   "description": "A Simple Meta Data To Source Code Tool!!",
-  "main": "./bin/sms.js",
+  "main": "./bin/smst.js",
   "bin": {
     "smst": "./bin/main.js"
   },

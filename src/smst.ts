@@ -1,6 +1,34 @@
 import * as fs from "fs"
 import * as path from "path"
 
+export class Meta {
+    public constructor(id: number, key: string, elem: Elem[]) {
+        this.id = id;
+        this.key = key;
+        this.elem = elem;
+    }
+
+    public id: number;
+    public key: string;
+    public elem: Elem[];
+
+    public toType?: (elem: Elem) => string;
+    public toField?: (elem: Elem) => string;
+    public toInit?: (elem: Elem) => string;
+    public toEncode?: (elem: Elem) => string;
+    public toDecode?: (elem: Elem) => string;
+}
+
+export class Elem {
+    public constructor(name: string, metas: string[]) {
+        this.name = name;
+        this.metas = metas;
+    }
+
+    public name: string;
+    public metas: string[];
+}
+
 export class Factory {
     public constructor(ctm: Meta) {
         this.ctm = ctm
@@ -33,8 +61,8 @@ export class Factory {
         return this.metas.get(key)!;
     }
 
-    public toType(metas: string[]): string {
-        return this.dryGetMeta(metas[0]).toType!(metas);
+    public toType(elem: Elem): string {
+        return this.dryGetMeta(elem.metas[0]).toType!(elem);
     }
 
     public toField(elem: Elem): string {
@@ -61,34 +89,6 @@ export class Factory {
     }
 }
 
-export class Meta {
-    public constructor(id: number, key: string, elem: Elem[]) {
-        this.id = id;
-        this.key = key;
-        this.elem = elem;
-    }
-
-    public id: number;
-    public key: string;
-    public elem: Elem[];
-
-    public toType?: (metas: string[]) => string;
-    public toField?: (elem: Elem) => string;
-    public toInit?: (elem: Elem) => string;
-    public toEncode?: (elem: Elem) => string;
-    public toDecode?: (elem: Elem) => string;
-}
-
-export class Elem {
-    public constructor(name: string, metas: string[]) {
-        this.name = name;
-        this.metas = metas;
-    }
-
-    public name: string;
-    public metas: string[];
-}
-
 let factories: Map<string, Factory> = new Map<string, Factory>();
 
 export function addFactory(lang: string, factory: Factory): void {
@@ -96,5 +96,6 @@ export function addFactory(lang: string, factory: Factory): void {
 }
 
 export function getFactory(lang: string): Factory {
+    void 0 === factories.get(lang) && require("./smst_" + lang);
     return factories.get(lang)!;
 }

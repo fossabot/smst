@@ -1,6 +1,6 @@
 import * as path from "path"
 
-import { Factory, Meta, Elem, addFactory } from './sms'
+import { Factory, Meta, Elem, addFactory } from './smst'
 
 /**
 as:
@@ -34,14 +34,14 @@ function toField(elem: Elem): string {
  * 注释 
  * <br/>定义类型: ${elem.metas.join(", ")}
 */
-public var ${elem.name}:${factory.dryGetMeta(elem.metas[0]).toType!(elem.metas)};`;
+public var ${elem.name}:${factory.dryGetMeta(elem.metas[0]).toType!(elem)};`;
 }
 
 let bool: Meta = {
     id: 0x01
     , key: "bool"
     , elem: []
-    , toType: (metas: string[]) => "Boolean"
+    , toType: (elem: Elem) => "Boolean"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "false" : `${elem.name} = false;`
     , toEncode: (elem: Elem) => `raw.writeBoolean(${elem.name});`
@@ -52,7 +52,7 @@ let i8: Meta = {
     id: 0x11
     , key: "i8"
     , elem: []
-    , toType: (metas: string[]) => "int"
+    , toType: (elem: Elem) => "int"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0" : `${elem.name} = 0;`
     , toEncode: (elem: Elem) => `raw.writeByte(${elem.name});`
@@ -63,7 +63,7 @@ let i16: Meta = {
     id: 0x12
     , key: "i16"
     , elem: []
-    , toType: (metas: string[]) => "int"
+    , toType: (elem: Elem) => "int"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0" : `${elem.name} = 0;`
     , toEncode: (elem: Elem) => `raw.writeShort(${elem.name});`
@@ -74,7 +74,7 @@ let i32: Meta = {
     id: 0x13
     , key: "i32"
     , elem: []
-    , toType: (metas: string[]) => "int"
+    , toType: (elem: Elem) => "int"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0" : `${elem.name} = 0;`
     , toEncode: (elem: Elem) => `raw.writeInt(${elem.name});`
@@ -85,7 +85,7 @@ let i64: Meta = {
     id: 0x14
     , key: "i64"
     , elem: []
-    , toType: (metas: string[]) => "Number"
+    , toType: (elem: Elem) => "Number"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0.0" : `${elem.name} = 0.0;`
     , toEncode: (elem: Elem) => `raw.writeDouble(${elem.name});`
@@ -96,7 +96,7 @@ let u8: Meta = {
     id: 0x21
     , key: "u8"
     , elem: []
-    , toType: (metas: string[]) => "uint"
+    , toType: (elem: Elem) => "uint"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0" : `${elem.name} = 0;`
     , toEncode: (elem: Elem) => `raw.writeByte(${elem.name});`
@@ -107,7 +107,7 @@ let u16: Meta = {
     id: 0x22
     , key: "u16"
     , elem: []
-    , toType: (metas: string[]) => "uint"
+    , toType: (elem: Elem) => "uint"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0" : `${elem.name} = 0;`
     , toEncode: (elem: Elem) => `raw.writeShort(${elem.name});`
@@ -118,7 +118,7 @@ let u32: Meta = {
     id: 0x23
     , key: "u32"
     , elem: []
-    , toType: (metas: string[]) => "uint"
+    , toType: (elem: Elem) => "uint"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0" : `${elem.name} = 0;`
     , toEncode: (elem: Elem) => `raw.writeInt(${elem.name});`
@@ -129,7 +129,7 @@ let u64: Meta = {
     id: 0x24
     , key: "u64"
     , elem: []
-    , toType: (metas: string[]) => "Number"
+    , toType: (elem: Elem) => "Number"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0.0" : `${elem.name} = 0.0;`
     , toEncode: (elem: Elem) => `raw.writeDouble(${elem.name});`
@@ -140,7 +140,7 @@ let f32: Meta = {
     id: 0x31
     , key: "f32"
     , elem: []
-    , toType: (metas: string[]) => "Number"
+    , toType: (elem: Elem) => "Number"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0.0" : `${elem.name} = 0.0;`
     , toEncode: (elem: Elem) => `raw.writeFloat(${elem.name});`
@@ -151,7 +151,7 @@ let f64: Meta = {
     id: 0x32
     , key: "f64"
     , elem: []
-    , toType: (metas: string[]) => "Number"
+    , toType: (elem: Elem) => "Number"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "0.0" : `${elem.name} = 0.0;`
     , toEncode: (elem: Elem) => `raw.writeDouble(${elem.name});`
@@ -162,7 +162,7 @@ let str: Meta = {
     id: 0x41
     , key: "string"
     , elem: []
-    , toType: (metas: string[]) => "String"
+    , toType: (elem: Elem) => "String"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? `""` : `${elem.name} = "";`
     , toEncode: (elem: Elem) => `raw.writeUTF(${elem.name});`
@@ -173,7 +173,7 @@ let arr: Meta = {
     id: 0x51
     , key: "array"
     , elem: []
-    , toType: (metas: string[]) => "Array"
+    , toType: (elem: Elem) => "Array"
     , toField: toField
     , toInit: (elem: Elem) => "" === elem.name ? "[]" : `${elem.name} = [];`
     , toEncode: (elem: Elem) => {
@@ -181,7 +181,7 @@ let arr: Meta = {
 {
     raw.writeUnsignedInt(${elem.name}.length);
 
-    for each(var e:${factory.dryGetMeta(elem.metas[1]).toType!(elem.metas)} in ${elem.name}) {
+    for each(var e:${factory.dryGetMeta(elem.metas[1]).toType!(elem)} in ${elem.name}) {
         ${factory.dryGetMeta(elem.metas[1]).toEncode!({ name: "e", metas: [elem.metas[1]] })}
     }
 }`;
@@ -202,7 +202,7 @@ let tup: Meta = {
     id: 0x61
     , key: "tuple"
     , elem: []
-    , toType: (metas: string[]) => "Array"
+    , toType: (elem: Elem) => "Array"
     , toField: toField
     , toInit: (elem: Elem) => {
         let tuple_array: string[] = [];
@@ -241,8 +241,8 @@ let map: Meta = {
     id: 0x71
     , key: "map"
     , elem: []
-    , toType: (metas: string[]) => {
-        switch (metas[1]) {
+    , toType: (elem: Elem) => {
+        switch (elem.metas[1]) {
             case "i8":
             case "i16":
             case "i32":
@@ -285,7 +285,7 @@ let map: Meta = {
     , toEncode: (elem: Elem) => {
         let type1: string = elem.metas[1];
         let type1_array: string[] = [type1];
-        let type1_real: string = factory.dryGetMeta(type1).toType!(type1_array);
+        let type1_real: string = factory.dryGetMeta(type1).toType!({ name: "", metas: type1_array});
 
         let type2: string = elem.metas[2];
         let type2_array: string[] = [type2];
@@ -420,8 +420,8 @@ let ctm: Meta = {
     id: 0x1000
     , key: "custom"
     , elem: []
-    , toType: (metas: string[]) => {
-        let keys: string[] = metas[0].split(/::/g);
+    , toType: (elem: Elem) => {
+        let keys: string[] = elem.metas[0].split(/::/g);
         return keys[1];
     }
     , toField: toField
@@ -439,9 +439,11 @@ ${elem.name}.decode(raw);`;
     }
 };
 
-export let factory = new Factory(ctm);
+let factory = new Factory(ctm);
 
 addFactory("as", factory);
+
+export default factory;
 
 factory.addMeta("bool", bool);
 factory.addMeta("i8", i8);
@@ -482,21 +484,21 @@ factory.toCustom = (meta: Meta): string => {
 
     return `
 package ${class_package} {
-    ${class_depends.join("\n\t")}
+    ${class_depends.join("\n")}
 
     public class ${class_name} {
         public function ${class_name}() {
-            ${class_inits.join("\n\t\t\t")}
+            ${class_inits.join("\n")}
         }
 
-        ${class_fields.join("\n\t\t")}
+        ${class_fields.join("\n")}
 
         public function encode(raw:ByteArray):void {
-            ${class_encodes.join("\n\t\t\t")}
+            ${class_encodes.join("\n")}
         }
 
         public function decode(raw:ByteArray):void {
-            ${class_decodes.join("\n\t\t\t")}
+            ${class_decodes.join("\n")}
         }
     }
 }`;

@@ -4,5 +4,4 @@
 /src/
 /.gitignore
 /.npmignore
-/LICENSE
 /tsconfig.json

@@ -1,6 +1,6 @@
 import * as path from "path"
 
-import { Factory, Meta, Elem, addFactory } from './smst'
+import { Json, Factory, Meta, Elem, addFactory } from './smst'
 
 /**
 as:
@@ -16,7 +16,7 @@ as:
 
     string -> String
 
-    array -> Array/Vector.<?>
+    array -> Array/Vector.<T>
 
     tuple -> Array
 
@@ -285,7 +285,7 @@ let map: Meta = {
     , toEncode: (elem: Elem) => {
         let type1: string = elem.metas[1];
         let type1_array: string[] = [type1];
-        let type1_real: string = factory.dryGetMeta(type1).toType!({ name: "", metas: type1_array});
+        let type1_real: string = factory.dryGetMeta(type1).toType!({ name: "", metas: type1_array });
 
         let type2: string = elem.metas[2];
         let type2_array: string[] = [type2];
@@ -439,9 +439,9 @@ ${elem.name}.decode(raw);`;
     }
 };
 
-let factory = new Factory(ctm);
+let factory = new Factory("as", ctm);
 
-addFactory("as", factory);
+addFactory(factory);
 
 factory.addMeta("bool", bool);
 factory.addMeta("i8", i8);
@@ -460,7 +460,7 @@ factory.addMeta("tuple", tup);
 factory.addMeta("map", map);
 factory.addMeta("custom", ctm);
 
-factory.toCustom = (meta: Meta): string => {
+factory.toCustom = (json: Json, meta: Meta): string => {
     let keys: string[] = meta.key.split(/::/g);
     let class_package: string = keys[0];
     let class_name: string = keys[1];

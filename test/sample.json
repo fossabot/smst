@@ -1,5 +1,10 @@
 {
-    "defs": [{
+    "package_prefix": {
+        "as": "",
+        "ts": "as2ts/lib",
+        "go": "github.com/wolfired/golabs"
+    },
+    "metas": [{
             "id": 4097,
             "key": "com.wolfired::Parent",
             "elem": [{
@@ -36,7 +41,17 @@
                 "metas": ["com.wolfired::Parent"]
             }, {
                 "name": "what",
-                "metas": ["tuple", "i8", "f32", "string", "com.wolfired::Parent"]
+                "metas": ["tuple", "i8", "f64", "string", "com.neway::MySon"]
+            }]
+        }, {
+            "id": 4099,
+            "key": "com.neway::MySon",
+            "elem": [{
+                "name": "name",
+                "metas": ["string"]
+            }, {
+                "name": "age",
+                "metas": ["i8"]
             }]
         }
     ]
